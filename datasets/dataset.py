@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 from utils.canny import image_to_edge
 from datasets.transform import mask_transforms, image_transforms
 from datasets.folder import make_dataset
+import cv2
 
 
 class ImageDataset(Dataset):
@@ -30,6 +31,11 @@ class ImageDataset(Dataset):
     def __getitem__(self, index):
 
         image = Image.open(self.image_files[index % self.number_image])
+        total_pixels = image.shape[0] * image.shape[1]
+        scale = np.sqrt(512 ** 2 / total_pixels)
+        width = int(image.shape[1] * scale)
+        height = int(image.shape[0] * scale)
+        image = cv2.resize(image, (width, height), interpolation = cv2.INTER_AREA)
         image = self.image_files_transforms(image.convert('RGB'))
 
         if self.mode == 'train':
