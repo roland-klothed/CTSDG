@@ -16,6 +16,6 @@ def image_transforms(load_size):
 def mask_transforms(load_size):
 
     return transforms.Compose([
-        transforms.Resize(size=load_size, interpolation=Image.NEAREST),
+        transforms.Resize(size=load_size, interpolation=Image.BILINEAR),
         transforms.ToTensor()
     ])
