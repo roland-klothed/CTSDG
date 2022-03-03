@@ -35,7 +35,10 @@ class ImageDataset(Dataset):
         scale = np.sqrt(512 ** 2 / total_pixels)
         width = int(image.shape[1] * scale)
         height = int(image.shape[0] * scale)
-        image = cv2.resize(image, (width, height), interpolation = cv2.INTER_AREA)
+        if scale > 1:
+            image = cv2.resize(image, (width, height))
+        else:
+            image = cv2.resize(image, (width, height), interpolation=INTER_AREA))
         image = self.image_files_transforms(image.convert('RGB'))
 
         if self.mode == 'train':
